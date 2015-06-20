@@ -13,6 +13,8 @@ Many of the concerns people have with Sass's `@extend`, the problems that can ar
 
 > **A Note on "mixins" & "extends"**: Mixins copy declarations from an abstract definition into a concrete rule set. Extends clone a concrete rule set's selector(s) and add them to an abstract placeholder selector. *This* plugin enables extends. If you would like to use mixins, as well — or instead — have a look at [`postcss-mixins`](https://github.com/postcss/postcss-mixins).
 
+**There's a big question worth asking, though: Is it ever better to use an `@extend` instead of a `@mixin`?** *The answer: maybe not.* Given the fact that [`@extend`s don't actually reduce generated file size (after gzip)](https://tech.bellycard.com/blog/sass-mixins-vs-extends-the-data/), I'm starting to think there is not a reason to use them. Anybody disagree? Let me know -- tweet @davidtheclark.
+
 ## Installation
 
 ```
