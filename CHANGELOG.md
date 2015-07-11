@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.3.2
+- Fix warning typo.
+
 ## v0.3.1
 - Ensure that unused defining at-rules and erroneous extending at-rules are removed from generated CSS.
 
