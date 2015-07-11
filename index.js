@@ -76,7 +76,7 @@ module.exports = postcss.plugin('postcss-simple-extend', function simpleExtend()
     function getExtendable(extIdent, node) {
       var targetExt = availablePlaceholders[extIdent];
       if (!targetExt) {
-        result.warn('`' + extIdent + '`, has not (yet) defined, so cannot be extended', { node: node });
+        result.warn('`' + extIdent + '`, has not (yet) been defined, so cannot be extended', { node: node });
       }
       return targetExt;
     }
