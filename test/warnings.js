@@ -88,7 +88,7 @@ test('registers extend-without-definition warning', function(t) {
     var extendUndefined = '.bar { @extend foo; }';
     checkForWarnings(extendUndefined, function(warnings, result) {
       st.equal(warnings.length, 1, 'registers a warning');
-      st.ok(/has not \(yet\) defined/.test(warnings[0].text),
+      st.ok(/has not \(yet\) been defined/.test(warnings[0].text),
         'registers the right warning');
       st.equal(result.css, '.bar { }', 'bad extension is removed');
       st.end();
@@ -102,7 +102,7 @@ test('registers extend-without-definition warning', function(t) {
     );
     checkForWarnings(extendNotYetDefined, function(warnings, result) {
       st.equal(warnings.length, 1, 'registers a warning');
-      st.ok(/has not \(yet\) defined/.test(warnings[0].text),
+      st.ok(/has not \(yet\) been defined/.test(warnings[0].text),
         'registers the right warning');
       st.equal(result.css, '.bar { }', 'bad extension and unused placeholder are removed');
       st.end();
