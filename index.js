@@ -9,7 +9,7 @@ module.exports = postcss.plugin('postcss-simple-extend', function simpleExtend()
     var extendingAtRules = ['extend', 'simple-extend-addto'];
     var availablePlaceholders = {};
 
-    css.eachAtRule(function(atRule) {
+    css.walkAtRules(function(atRule) {
       if (definingAtRules.indexOf(atRule.name) !== -1) {
         processDefinition(atRule);
       } else if (extendingAtRules.indexOf(atRule.name) !== -1) {
@@ -20,13 +20,13 @@ module.exports = postcss.plugin('postcss-simple-extend', function simpleExtend()
     // Remove placeholders that were never used
     for (var p in availablePlaceholders) {
       if (availablePlaceholders.hasOwnProperty(p) && !availablePlaceholders[p].selector) {
-        availablePlaceholders[p].removeSelf();
+        availablePlaceholders[p].remove();
       }
     }
 
     function processDefinition(atRule) {
       if (isBadDefinitionLocation(atRule)) {
-        atRule.removeSelf();
+        atRule.remove();
         return;
       }
 
@@ -35,24 +35,24 @@ module.exports = postcss.plugin('postcss-simple-extend', function simpleExtend()
       // Manually copy styling properties (semicolon, whitespace)
       // to newly created and cloned nodes,
       // cf. https://github.com/postcss/postcss/issues/85
-      definition.semicolon = atRule.semicolon;
+      definition.raws.semicolon = atRule.raws.semicolon;
       atRule.nodes.forEach(function(node) {
         if (isBadDefinitionNode(node)) return;
         var clone = node.clone();
-        clone.before = node.before;
+        clone.raws.before = node.raws.before;
         clone.after = node.after;
-        clone.between = node.between;
+        clone.raws.between = node.raws.between;
         definition.append(clone);
       });
 
       atRule.parent.insertBefore(atRule, definition);
       availablePlaceholders[atRule.params] = definition;
-      atRule.removeSelf();
+      atRule.remove();
     }
 
     function processExtension(atRule) {
       if (isBadExtensionLocation(atRule)) {
-        atRule.removeSelf();
+        atRule.remove();
         return;
       }
 
@@ -63,7 +63,7 @@ module.exports = postcss.plugin('postcss-simple-extend', function simpleExtend()
           ? targetExt.selector + ',\n' + selectorToAdd
           : selectorToAdd;
       }
-      atRule.removeSelf();
+      atRule.remove();
     }
 
     function isBadDefinitionNode(node) {
