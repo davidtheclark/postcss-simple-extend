@@ -21,7 +21,9 @@ If you are looking for a more full-featured `@extend`, check out [`postcss-exten
 npm install postcss-simple-extend --save
 ```
 
-This plugin is compatible with PostCSS v4.1+.
+Version 1.0.0+ is compatible with PostCSS v5+.
+
+Lower versions are compatible with PostCSS 4.1+.
 
 ## Example Input-Output
 
