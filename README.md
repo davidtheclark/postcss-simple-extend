@@ -62,6 +62,8 @@ Output:
 
 ## Usage
 
+**Note for Sass enthusiasts**: This plugin *does not support `%` selectors*. It uses the custom at-rules described below, instead. (Because I didn't want to hijack the `%` character, and potentially clash with other transforms.)
+
 ### Define Your Placeholder
 
 With `@define-placeholder`, you associate a rule set with a placeholder selector, which you will later extend with concrete selectors.
