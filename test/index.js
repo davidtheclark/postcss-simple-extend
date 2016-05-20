@@ -13,8 +13,8 @@ function fixture(name) {
   return fs.readFileSync(fixturePath(name), 'utf8').trim();
 }
 
-function compareFixtures(t, name) {
-  var actualCss = postcss(simpleExtend)
+function compareFixtures(t, name, options) {
+  var actualCss = postcss(simpleExtend(options))
     .process(fixture(name), { from: fixturePath(name) })
     .css
     .trim();
@@ -30,8 +30,8 @@ function compareFixtures(t, name) {
   );
 }
 
-function p(css) {
-  return postcss(simpleExtend).process(css).css;
+function p(css, options) {
+  return postcss(simpleExtend(options)).process(css).css;
 }
 
 test('basically works', function(t) {
@@ -96,6 +96,22 @@ test('eliminates unused definition', function(t) {
 
 test('eliminates faulty extension', function(t) {
   t.equal(p('.foo { @extend baz; }'), '.foo { }');
+  t.end();
+});
+
+test('does not allow nesting by default', function(t) {
+  t.equal(
+    p('@define-placeholder bar { @media (max-width: 600px) { background: red; } } .foo { @extend bar; }'),
+    '.foo { } .foo { }'
+  );
+  t.end();
+});
+
+test('allows nesting when using option', function(t) {
+  t.equal(
+    p('@define-placeholder bar { @media (max-width: 600px) { background: red; } } .foo { @extend bar; }', { allowNesting: true }),
+    '.foo { @media (max-width: 600px) { background: red } } .foo { }'
+  );
   t.end();
 });
 

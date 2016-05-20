@@ -2,7 +2,8 @@
 
 var postcss = require('postcss');
 
-module.exports = postcss.plugin('postcss-simple-extend', function simpleExtend() {
+module.exports = postcss.plugin('postcss-simple-extend', function simpleExtend(options) {
+  var allowNesting = Boolean(options && options.allowNesting);
 
   return function(css, result) {
     var definingAtRules = ['define-placeholder', 'define-extend', 'simple-extend-define'];
@@ -40,7 +41,7 @@ module.exports = postcss.plugin('postcss-simple-extend', function simpleExtend()
         if (isBadDefinitionNode(node)) return;
         var clone = node.clone();
         clone.raws.before = node.raws.before;
-        clone.after = node.after;
+        clone.raws.after = node.raws.after;
         clone.raws.between = node.raws.between;
         definition.append(clone);
       });
@@ -67,7 +68,7 @@ module.exports = postcss.plugin('postcss-simple-extend', function simpleExtend()
     }
 
     function isBadDefinitionNode(node) {
-      if (node.type === 'rule' || node.type === 'atrule') {
+      if (!allowNesting && (node.type === 'rule' || node.type === 'atrule')) {
         result.warn('Defining at-rules cannot contain statements', { node: node });
         return true;
       }
